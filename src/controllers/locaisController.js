@@ -8,18 +8,18 @@ exports.getLocais = (req, res) => {
 };
 
 exports.createLocal = (req, res) => {
-  const { nome, latitude, longitude, endereco } = req.body;
+  const { nome, latitude, longitude, endereco, cep } = req.body;
   if (!nome || !latitude || !longitude) return res.status(400).json({ error: 'Campos obrigatórios' });
-  db.run('INSERT INTO locais (nome, latitude, longitude, endereco) VALUES (?, ?, ?, ?)', [nome, latitude, longitude, endereco], function(err) {
+  db.run('INSERT INTO locais (nome, latitude, longitude, endereco, cep) VALUES (?, ?, ?, ?, ?)', [nome, latitude, longitude, endereco, cep], function(err) {
     if (err) return res.status(400).json({ error: err.message });
-    res.json({ id: this.lastID, nome, latitude, longitude, endereco });
+    res.json({ id: this.lastID, nome, latitude, longitude, endereco, cep });
   });
 };
 
 exports.updateLocal = (req, res) => {
   const { id } = req.params;
-  const { nome, latitude, longitude, endereco } = req.body;
-  db.run('UPDATE locais SET nome = ?, latitude = ?, longitude = ?, endereco = ? WHERE id = ?', [nome, latitude, longitude, endereco, id], function(err) {
+  const { nome, latitude, longitude, endereco, cep } = req.body;
+  db.run('UPDATE locais SET nome = ?, latitude = ?, longitude = ?, endereco = ?, cep = ? WHERE id = ?', [nome, latitude, longitude, endereco, cep, id], function(err) {
     if (err) return res.status(400).json({ error: err.message });
     res.json({ message: 'Atualizado' });
   });
